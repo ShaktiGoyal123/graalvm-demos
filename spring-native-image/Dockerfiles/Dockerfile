@@ -33,13 +33,16 @@ WORKDIR /build
 COPY . /build
 
 # Build
-RUN mvn clean package -Pnative
+RUN mvn clean package native:compile -Pnative
+
+
 
 # The deployment Image
 FROM docker.io/oraclelinux:8-slim
 
 EXPOSE 8080
 
+
 # Copy the native executable into the containers
 COPY --from=builder /build/target/benchmark-jibber .
-ENTRYPOINT ["/jibber"]
+ENTRYPOINT ["/benchmark-jibber"]
